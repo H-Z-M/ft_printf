@@ -1,8 +1,12 @@
 # ft_printf
 ### libcのprintf関数を再コーディングする
-- ft_printfのプロトタイプは	int ft_printf(const char * , ...)	でなければならない。
-- 本当のprintfのようにバッファ管理をしない。  
-  
+
+|Function         | ft_printf                 |
+|:-----------------|:-------------------------------|
+|**Prototype**        | **int ft_printf(const char * , ...);** |
+|**Turn in files**    | **\*.c, \*.h, Makefile** |
+|**External functs**  | **malloc, free, write, va_start, va_arg, va_copy, va_end**            |
+
 **以下に対応する**  
 - フラグ文字  
 「-0.# +」(そのうちの1つはスペース)
