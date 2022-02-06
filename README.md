@@ -1,8 +1,8 @@
 # ft_printf
 ### libcのprintf関数を再コーディングする
 - ft_printfのプロトタイプは	int ft_printf(const char * , ...)	でなければならない。
-- 本当のprintfのようにバッファ管理をしない。
-- cspdiuxX%の変換を行います。
+- 本当のprintfのようにバッファ管理をしない。  
+  
 **以下に対応する**  
 - フラグ文字
 「-0.# +"」(そのうちの1つはスペース)
