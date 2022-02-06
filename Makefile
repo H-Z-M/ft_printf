@@ -1,33 +1,37 @@
-NAME = libftprintf.a
-CC = gcc
-FLAGS = -Wall -Wextra -Werror
-
-SRCS =	ft_printf.c \
-		type_field.c \
-		type_field2.c \
-		ntoa_format.c \
-		ntoa_uint.c \
-		ntoa_ulong.c \
-		out_char.c \
-		utility.c 
-
-OBJ = $(SRCS:.c=.o)
+NAME	=	libftprintf.a
+CC		=	gcc
+CFLAGS	=	-Wall -Wextra -Werror
+SRCS_DIR=	./
+SRCS	=	ft_printf.c \
+			ft_flags.c \
+			ft_type.c \
+			ft_type2.c \
+			ft_forming.c \
+			ft_value_len.c \
+			ft_out_char.c \
+			util_libft.c \
+			util.c 
+OBJS_DIR=	obj/
+OBJ		=	$(SRCS:.c=.o)
+OBJS	=	$(addprefix $(OBJS_DIR), $(OBJ))
+RM		=	rm -rf
 
 all : $(NAME)
 
-$(NAME) : $(OBJ)
-	ar rc $(NAME) $(OBJ)
+$(NAME) : $(OBJS)
+	ar rc $(NAME) $(OBJS)
 
-%.o : %.c
-	$(CC) $(FLAGS) -c -o $@ $<
+$(OBJS_DIR)%.o : $(SRCS_DIR)%.c
+	@mkdir -p $(OBJS_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 bonus : $(NAME)
 
 clean :
-	rm -f $(OBJ)
+	$(RM) $(OBJS_DIR)
 
 fclean : clean
-	rm -f $(NAME)
+	$(RM) $(NAME)
 
 re : fclean all
 

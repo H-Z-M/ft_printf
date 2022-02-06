@@ -6,7 +6,7 @@
 /*   By: sudatsu <sudatsu@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/11 18:43:55 by sudatsu           #+#    #+#             */
-/*   Updated: 2021/09/18 13:24:12 by sudatsu          ###   ########.fr       */
+/*   Updated: 2021/12/12 10:51:58 by sudatsu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,22 @@
 # include <stdlib.h>
 # include <limits.h>
 
-# define TRUE	1
-# define FALSE	0
+typedef enum e_bool
+{
+	FALSE,
+	TRUE,
+}			t_bool;
 
 typedef enum e_flags
 {
-	FLAGS_ZEROPAD =			(1 << 0),
-	FLAGS_LEFT =			(1 << 1),
-	FLAGS_PLUS =			(1 << 2),
-	FLAGS_SPACE =			(1 << 3),
-	FLAGS_HASH =			(1 << 4),
-	FLAGS_UPPERCASE =		(1 << 5),
-	FLAGS_PRECISION =		(1 << 6),
-	FLAGS_PTR =				(1 << 7),
+	FLAGS_ZEROPAD	=	(1 << 0),
+	FLAGS_LEFT		=	(1 << 1),
+	FLAGS_PLUS		=	(1 << 2),
+	FLAGS_SPACE		=	(1 << 3),
+	FLAGS_HASH		=	(1 << 4),
+	FLAGS_UPPERCASE	=	(1 << 5),
+	FLAGS_PRECISION	=	(1 << 6),
+	FLAGS_PTR		=	(1 << 7),
 }			t_flags;
 
 typedef struct s_format
@@ -40,58 +43,67 @@ typedef struct s_format
 	unsigned int	precision;
 	unsigned int	base;
 	size_t			idx;
+	size_t			buf_len;
+	char			*buf;
 	int				negative;
+	int				error;
 }			t_format;
 
 /*
 ** ft_printf.c 
 */
 int		ft_printf(const char *format, ...);
+
+/*
+** ft_flags.c 
+*/
 void	ft_flags(const char **format, t_format *fmt);
+void	ft_width(const char **format, t_format *fmt);
 void	ft_precision(const char **format, t_format *fmt);
 
 /*
-** type_field.c 
+** ft_type.c 
 */
 void	ft_type(const char **format, va_list va, t_format *fmt);
 
 /*
-** type_field2.c 
+** ft_type2.c 
 */
 void	ft_type_char(const char **format, va_list va, t_format *fmt);
 void	ft_type_str(const char **format, va_list va, t_format *fmt);
 void	ft_type_ptr(const char **format, va_list va, t_format *fmt);
+void	ft_type_else(const char **format, t_format *fmt);
 
 /*
-** ntoa_uint.c 
+** ft_forming.c 
 */
-size_t	ntoa_uint(size_t idx, unsigned int value, t_format *fmt);
+void	ft_forming(unsigned long value, t_format *fmt, int is_uint);
 
 /*
-** ntoa_ulong.c 
+** ft_value_len.c 
 */
-size_t	ntoa_ulong(size_t idx, unsigned long value, t_format *fmt);
+size_t	ft_value_len(size_t len, t_format *fmt);
 
 /*
-** ntoa_format.c 
+** ft_out_char.c 
 */
-size_t	ntoa_format(char *buf, size_t idx, size_t len, t_format *fmt);
-size_t	ntoa_format_len(size_t len, t_format *fmt);
-size_t	ntoa_format_hash_len(size_t len, t_format *fmt);
+void	ft_out_buf(t_format *fmt);
+void	ft_out_char(char c, t_format *fmt);
+void	ft_out_rev(const char *buf, size_t len, t_format *fmt);
+void	ft_type_else_out_char(const char **format, t_format *fmt);
 
 /*
-** out_char.c 
+** util_libft.c 
 */
-void	out_char(char character, size_t idx);
-void	ft_type_else_format(const char **format, t_format *fmt);
-size_t	out_rev(size_t idx, const char *buf, size_t len, t_format *fmt);
+char	*ft_strnjoin(char const *s1, char const *s2, size_t n);
+char	*ft_strdup(const char *s1);
 
 /*
-** utility.c 
+** util.c 
 */
-int		is_digit(char ch);
-void	ft_putchar(char c);
-size_t	ft_atoi_pf(const char **str);
-size_t	ft_strnlen(const char *str, int maxsize);
+int		ft_error_check(const char *s, t_format *fmt);
+int		ft_isdigit(char c);
+int		ft_parse_length(const char **format, t_format *fmt, int is_width);
+size_t	ft_strnlen(const char *value, t_format *fmt);
 
 #endif

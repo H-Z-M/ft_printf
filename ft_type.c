@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   type_field.c                                       :+:      :+:    :+:   */
+/*   ft_type.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sudatsu <sudatsu@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 09:14:59 by sudatsu           #+#    #+#             */
-/*   Updated: 2021/09/18 00:39:49 by sudatsu          ###   ########.fr       */
+/*   Updated: 2021/12/12 09:42:26 by sudatsu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,20 +42,24 @@ void	ft_type_digit(const char **format, va_list va, t_format *fmt)
 		value = va_arg(va, int);
 		fmt->negative = value < 0;
 		if (fmt->negative)
-			value = 0 - value;
-		fmt->idx = ntoa_uint(fmt->idx, value, fmt);
+			value *= -1;
+		ft_forming(value, fmt, TRUE);
 	}
 	else
 	{
 		fmt->negative = FALSE;
 		value_u = va_arg(va, unsigned int);
-		fmt->idx = ntoa_uint(fmt->idx, value_u, fmt);
+		ft_forming(value_u, fmt, TRUE);
 	}
 	(*format)++;
 }
 
 void	ft_type(const char **format, va_list va, t_format *fmt)
 {
+	if (fmt->error)
+		return ;
+	if (fmt->buf_len)
+		ft_out_buf(fmt);
 	if (**format == 'd' || **format == 'i' || **format == 'u'
 		|| **format == 'x' || **format == 'X')
 		ft_type_digit(format, va, fmt);
@@ -66,5 +70,5 @@ void	ft_type(const char **format, va_list va, t_format *fmt)
 	else if (**format == 'p')
 		ft_type_ptr(format, va, fmt);
 	else
-		ft_type_else_format(format, fmt);
+		ft_type_else(format, fmt);
 }
